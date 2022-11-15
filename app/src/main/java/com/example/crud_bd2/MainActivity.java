@@ -9,10 +9,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
     EditText rutE, nomE, apeE;
     ListView ListViewEstudiante;
     Button addE, modE, remE;
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,21 +34,56 @@ public class MainActivity extends AppCompatActivity {
         addE = findViewById(R.id.RegistrarEstudiante);
         modE = findViewById(R.id.ModificarEstudiante);
         remE = findViewById(R.id.EliminarEstudiante);
+        inicializarFirebase();
 
         addE.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String r = rutE.getText().toString();
-                String n = nomE.getText().toString();
-                String a = apeE.getText().toString();
-
-                if (r.isEmpty() && n.isEmpty() && a.isEmpty())
-                    Toast.makeText(getApplicationContext(), "Llene Los campos", Toast.LENGTH_SHORT).show();
-            }else{
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Alumno ingresado", Toast.LENGTH_SHORT).show();
 
             }
         });
+        modE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Alumno modificado", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        remE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Alumno eliminado", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
+        private void validacion() {
+            String rut = rutE.getText().toString();
+            String nombre = nomE.getText().toString();
+            String apellido = apeE.getText().toString();
 
+            if (rut.equals("")){
+                rutE.setError("Required");
+            }
+            else if (nombre.equals("")){
+                nomE.setError("Required");
+            }
+            else if (apellido.equals("")){
+                apeE.setError("Required");
+            }
+        }
 
-}
+        private void limpiarCajas() {
+                rutE.setText("");
+                nomE.setText("");
+                apeE.setText("");
+        }
+        private void inicializarFirebase() {
+                   FirebaseApp.initializeApp(this);
+                   firebaseDatabase = FirebaseDatabase.getInstance();
+                   databaseReference = firebaseDatabase.getReference();
+        }
+        
+    }
