@@ -114,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
         remE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Estudiante e = new Estudiante();
+                e.setUid(estudianteSel.getUid());
+                databaseReference.child("Estudiantes").child(e.getUid()).removeValue();
+                limpiarCajas();
                 Toast.makeText(MainActivity.this, "Alumno eliminado", Toast.LENGTH_SHORT).show();
 
             }

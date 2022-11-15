@@ -50,6 +50,8 @@ public class Estudiante {
 
     @Override
     public String toString() {
-        return Nombre;
+        return ("R.U.T: "+Rut+"" +
+                " Nombre: "+Nombre+"" +
+                " Apellido: "+Apellido);
     }
 }
