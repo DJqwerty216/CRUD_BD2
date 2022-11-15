@@ -102,8 +102,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ListarEstudiante() {
-        databaseReference.child("Estudiantes");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Estudiantes").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listEst.clear();
@@ -151,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         private void inicializarFirebase() {
                    FirebaseApp.initializeApp(this);
                    firebaseDatabase = FirebaseDatabase.getInstance();
+
                    databaseReference = firebaseDatabase.getReference();
         }
         
