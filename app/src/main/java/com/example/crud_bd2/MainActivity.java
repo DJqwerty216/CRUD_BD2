@@ -1,9 +1,11 @@
 package com.example.crud_bd2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -11,12 +13,20 @@ import android.widget.Toast;
 
 import com.example.crud_bd2.model.Estudiante;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
+    private List<Estudiante> listEst = new ArrayList<Estudiante>();
+    ArrayAdapter<Estudiante> arrayAdapterEstudiante;
+
     EditText rutE, nomE, apeE;
     ListView ListViewEstudiante;
     Button addE, modE, remE;
@@ -38,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         modE = findViewById(R.id.ModificarEstudiante);
         remE = findViewById(R.id.EliminarEstudiante);
         inicializarFirebase();
+        ListarEstudiante();
 
 
 
@@ -66,6 +77,16 @@ public class MainActivity extends AppCompatActivity {
         modE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String rut = rutE.getText().toString();
+                String nombre = nomE.getText().toString();
+                String apellido = apeE.getText().toString();
+                if(rut.equals("") || nombre.equals("") || apellido.equals("")){
+                    validacion();
+                }else{
+                    Estudiante e = new Estudiante();
+
+                }
+
                 Toast.makeText(MainActivity.this, "Alumno modificado", Toast.LENGTH_SHORT).show();
 
             }
@@ -79,7 +100,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-        private void validacion() {
+
+    private void ListarEstudiante() {
+        databaseReference.child("Estudiantes");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listEst.clear();
+                for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
+                    Estudiante e = objSnapshot.getValue(Estudiante.class);
+                    listEst.add(e);
+
+                }
+                arrayAdapterEstudiante = new ArrayAdapter<Estudiante>(MainActivity.this, android.R.layout.simple_list_item_1, listEst);
+                ListViewEstudiante.setAdapter(arrayAdapterEstudiante);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void validacion() {
             String rut = rutE.getText().toString();
             String nombre = nomE.getText().toString();
             String apellido = apeE.getText().toString();
