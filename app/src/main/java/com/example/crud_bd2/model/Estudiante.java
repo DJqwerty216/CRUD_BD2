@@ -1,11 +1,27 @@
 package com.example.crud_bd2.model;
 
 public class Estudiante {
-    public String Rut;
-    public String Nombre;
-    public String Apellido;
+    private String Rut;
+    private String Nombre;
+    private String Apellido;
+    private String uid;
 
     public Estudiante() {
+    }
+
+    public Estudiante(String rut, String nombre, String apellido, String uid) {
+        Rut = rut;
+        Nombre = nombre;
+        Apellido = apellido;
+        this.uid = uid;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getRut() {

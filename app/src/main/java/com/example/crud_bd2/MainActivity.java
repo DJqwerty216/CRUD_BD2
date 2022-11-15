@@ -9,9 +9,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.crud_bd2.model.Estudiante;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     EditText rutE, nomE, apeE;
@@ -36,11 +39,28 @@ public class MainActivity extends AppCompatActivity {
         remE = findViewById(R.id.EliminarEstudiante);
         inicializarFirebase();
 
+
+
         addE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Alumno ingresado", Toast.LENGTH_SHORT).show();
 
+                String rut = rutE.getText().toString();
+                String nombre = nomE.getText().toString();
+                String apellido = apeE.getText().toString();
+
+                if(rut.equals("") || nombre.equals("") || apellido.equals("")){
+                    validacion();
+                }else{
+                    Estudiante e = new Estudiante();
+                    e.setUid(UUID.randomUUID().toString());
+                    e.setRut(rut);
+                    e.setNombre(nombre);
+                    e.setApellido(apellido);
+                    databaseReference.child("Estudiantes").child(e.getUid()).setValue(e);
+                    Toast.makeText(MainActivity.this, "Alumno ingresado", Toast.LENGTH_SHORT).show();
+                    limpiarCajas();
+                }
             }
         });
         modE.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +88,15 @@ public class MainActivity extends AppCompatActivity {
                 rutE.setError("Required");
             }
             else if (nombre.equals("")){
+
                 nomE.setError("Required");
-            }
-            else if (apellido.equals("")){
+
+            }else if(apellido.equals(""))
+
+            {
                 apeE.setError("Required");
             }
+
         }
 
         private void limpiarCajas() {

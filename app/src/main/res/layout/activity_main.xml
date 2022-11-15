@@ -14,10 +14,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="RUT">
 
         <EditText
             android:layout_width="match_parent"
@@ -26,13 +22,10 @@
             android:ems="10"
             android:inputType="text"
             android:paddingTop="12dp"
+            android:hint="R.U.T"
             />
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nombre">
+
 
         <EditText
             android:layout_width="match_parent"
@@ -41,14 +34,10 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:paddingTop="12dp"
+            android:hint="Nombre"
             />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Apellido">
 
         <EditText
             android:layout_width="match_parent"
@@ -57,9 +46,9 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:paddingTop="12dp"
+            android:hint="Apellido"
             />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/RegistrarEstudiante"
