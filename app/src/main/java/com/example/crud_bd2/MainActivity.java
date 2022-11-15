@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.crud_bd2.model.Estudiante;
+import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Estudiante> listEst = new ArrayList<Estudiante>();
     ArrayAdapter<Estudiante> arrayAdapterEstudiante;
 
+    Estudiante estudianteSel;
     EditText rutE, nomE, apeE;
     ListView ListViewEstudiante;
     Button addE, modE, remE;
@@ -50,6 +53,15 @@ public class MainActivity extends AppCompatActivity {
         inicializarFirebase();
         ListarEstudiante();
 
+        ListViewEstudiante.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                estudianteSel = (Estudiante) parent.getItemAtPosition(position);
+                rutE.setText(estudianteSel.getRut());
+                nomE.setText(estudianteSel.getNombre());
+                apeE.setText(estudianteSel.getApellido());
+            }
+        });
 
 
         addE.setOnClickListener(new View.OnClickListener() {
@@ -77,14 +89,22 @@ public class MainActivity extends AppCompatActivity {
         modE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String rut = rutE.getText().toString();
                 String nombre = nomE.getText().toString();
                 String apellido = apeE.getText().toString();
+
                 if(rut.equals("") || nombre.equals("") || apellido.equals("")){
                     validacion();
                 }else{
                     Estudiante e = new Estudiante();
-
+                    e.setUid(estudianteSel.getUid());
+                    e.setRut(rutE.getText().toString().trim());
+                    e.setNombre(nomE.getText().toString().trim());
+                    e.setApellido(apeE.getText().toString().trim());
+                    databaseReference.child("Estudiantes").child(e.getUid()).setValue(e);
+                    Toast.makeText(MainActivity.this, "Alumno Actualizado", Toast.LENGTH_SHORT).show();
+                    limpiarCajas();
                 }
 
                 Toast.makeText(MainActivity.this, "Alumno modificado", Toast.LENGTH_SHORT).show();
